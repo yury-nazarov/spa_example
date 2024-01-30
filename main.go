@@ -4,18 +4,27 @@ import (
 	"fmt"
 	"go_backend/ui"
 	"io/fs"
+	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 
 	_ "go_backend/ui"
 )
 
 func main() {
+
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
+
+
 	srv := &http.Server{
 		Addr: ":8000",
 		Handler: router(),
 	}
+	slog.Info("server was started")
 	srv.ListenAndServe()
+
 }
 
 func router() http.Handler {
